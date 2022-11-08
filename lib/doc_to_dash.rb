@@ -48,10 +48,12 @@ module DocToDash
 
       @classes = parser.parse_classes
       @methods = parser.parse_methods
+      @files = parser.parse_files
 
-      if @methods && @classes
+      if @methods && @classes && @files
         load_methods_into_database
         load_classes_into_database
+        load_files_into_database
 
         log "Docset created."
         @docset_path
@@ -127,12 +129,17 @@ module DocToDash
 
     def load_methods_into_database
       log "Loading methods into database."
-      insert_into_database @methods, 'clm'
+      insert_into_database @methods, 'Class'
     end
 
     def load_classes_into_database
       log "Loading classes into database."
-      insert_into_database @classes, 'cl'
+      insert_into_database @classes, 'Method'
+    end
+
+    def load_files_into_database
+      log "Loading files into database."
+      insert_into_database @files, 'Guide'
     end
 
     def insert_into_database(array, type)

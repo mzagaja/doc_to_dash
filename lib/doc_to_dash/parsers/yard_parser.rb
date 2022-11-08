@@ -41,5 +41,21 @@ module DocToDash
 
       methods
     end
+
+    def parse_files
+      files_file = File.read(@doc_directory + '/file_list.html')
+      files_html = Nokogiri::HTML(files_file)
+      files = []
+
+      files_html.css('span.object_link').each do |file|
+        a     = file.children.first
+        href  = a["href"].to_s
+        name  = a["title"].to_s # Strip the (ClassName) and whitespace.
+
+        files << [href, name]
+      end
+
+      files
+    end
   end
 end
