@@ -129,12 +129,12 @@ module DocToDash
 
     def load_methods_into_database
       log "Loading methods into database."
-      insert_into_database @methods, 'Class'
+      insert_into_database @methods, 'Method'
     end
 
     def load_classes_into_database
       log "Loading classes into database."
-      insert_into_database @classes, 'Method'
+      insert_into_database @classes, 'Class'
     end
 
     def load_files_into_database
@@ -143,7 +143,7 @@ module DocToDash
     end
 
     def insert_into_database(array, type)
-      array.each { |item| @db.execute("insert into searchIndex (name, type, path) VALUES(?, ?, ?)", item.last, type, @options[:doc_save_folder] + '/' + item.first) }
+      array.each { |item| @db.execute("insert into searchIndex (name, type, path) VALUES(?, ?, ?)", [item.last, type, @options[:doc_save_folder] + '/' + item.first]) }
     end
 
     def default_plist
